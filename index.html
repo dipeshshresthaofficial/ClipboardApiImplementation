@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div
+      style="
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div>
+        <div
+          id="pasted-image-div"
+          style="
+            min-height: 100px;
+            min-width: 290px;
+            border: 1px solid green;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+          "
+        ></div>
+        <button
+          id="paste-btn"
+          style="
+            border: none;
+            outline: none;
+            width: 100%;
+            background-color: green;
+            color: #fff;
+            border-radius: 0.2em;
+            padding: 9px 2px;
+            margin-top: 5px;
+            cursor: pointer;
+          "
+        >
+          Paste
+        </button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const pasteBtn = document.getElementById("paste-btn");
+    const pastedImageDiv = document.getElementById("pasted-image-div");
+    pasteBtn.addEventListener("click", async (e) => {
+      pastedImageDiv.textContent = "";
+      const clipboardData = await navigator.clipboard.read();
+      // for(const clipboardDatas of clipboardData){
+      //     for( const clipboardItem of clipboardDatas.types){
+
+      //     }
+      // }
+      const clipboardImg = clipboardData[0];
+      try {
+        const imgBlob = await clipboardImg.getType("image/png");
+        const blobUrl = window.URL.createObjectURL(imgBlob);
+        const imgTag = document.createElement("img");
+        imgTag.src = blobUrl;
+        pastedImageDiv.appendChild(imgTag);
+      } catch (err) {
+        console.log(err);
+        alert('You need to first copy the image of Barcode.')
+      }
+    });
+  </script>
+</html>
